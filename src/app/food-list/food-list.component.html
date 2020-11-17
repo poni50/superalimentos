@@ -1,0 +1,87 @@
+<ng-template [ngIf]="!addFood" [ngIfElse]="foodForm">
+  <form>
+    <mat-form-field>
+      <mat-label>Search</mat-label>
+      <input matInput #searchInput />
+    </mat-form-field>
+  </form>
+
+  <div class="row">
+    <div class="cardsContainer">
+      <mat-card
+        *ngFor="let food of foods | filterByName: searchInput.value"
+        (click)="addFoodDailyMenu(food)"
+        class="product"
+      >
+        <mat-card-title>{{ food.name }}</mat-card-title>
+        <mat-card-subtitle>Calories: {{ food.calories }}</mat-card-subtitle>
+        <img [src]="food.image" mat-card-image />
+      </mat-card>
+    </div>
+
+    <div class="cardsContainer">
+      <mat-card>
+        <mat-card-title>Daily Menu</mat-card-title>
+        <mat-card-subtitle
+          >Calories: {{ dailyMenu.calories }}</mat-card-subtitle
+        >
+        <mat-card-content>
+          <ol>
+            <li *ngFor="let product of dailyMenu.products; index as i">
+              {{ i + 1 + ". " + product.name + " x" + product.repeats }}
+            </li>
+          </ol>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #foodForm>
+  <form
+    (ngSubmit)="submitFood(foodName, foodImage, foodCalories, foodForm)"
+    #foodForm="ngForm"
+  >
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput name="foodName" #foodName="ngModel" required ngModel />
+      <mat-error *ngIf="foodName.invalid">
+        <mat-error *ngIf="foodName.dirty || foodName.touched"
+          ><span>You can't leave this field empty</span>
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Image link</mat-label>
+      <input matInput name="foodImage" #foodImage="ngModel" required ngModel />
+      <mat-error *ngIf="foodImage.invalid">
+        <mat-error *ngIf="foodImage.dirty || foodImage.touched"
+          ><span>You can't leave this field empty</span>
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Calories</mat-label>
+      <input
+        matInput
+        name="foodCalories"
+        #foodCalories="ngModel"
+        required
+        ngModel
+      />
+      <mat-error *ngIf="foodCalories.invalid">
+        <mat-error *ngIf="foodCalories.dirty || foodCalories.touched"
+          ><span>You can't leave this field empty</span>
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button type="submit" color="primary">Submit</button>
+  </form>
+</ng-template>
+
+<button mat-fab color="primary" (click)="addFood = !addFood">
+  <mat-icon> {{ addFood ? "close" : "add" }} </mat-icon>
+</button>
