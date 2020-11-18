@@ -6,6 +6,11 @@
   margin: 0px auto;
 }
 
+#dailyMenuCard {
+  position: sticky;
+  top: 15px;
+}
+
 mat-card {
   width: 100%;
   margin-bottom: 20px;
